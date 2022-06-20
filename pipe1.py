@@ -11,7 +11,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 print("Starting chatbot: ")
 running = True
 while running:
-    response = input("How are you doing?\n\n")
+    response = input("How are you doing?\n")
     classifier = pipeline("sentiment-analysis" , model = model, tokenizer= tokenizer)
     res = classifier(response)
     #print(res)
@@ -19,10 +19,10 @@ while running:
     #print(f"label: {result['label']}")
     if(result=="POSITIVE"):
         print("\nThat's great!")
-        response = "\nThat's great!"
+        response = "That's great!"
     else:
         print("\nThat's not so great")
-        response = "\nThat's not so great"
+        response = "That's not so great"
 
     
     running = False
