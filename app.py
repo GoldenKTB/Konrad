@@ -1,7 +1,8 @@
 from tkinter import *
-from pipe1 import response
-
-#TODO: It doesn't take responses from the user in the app, only from the terminal. Need to expand chatbot and connect to app.
+from gtts import gTTS
+from pydub import AudioSegment
+from pydub.playback import play
+from botChat import getResponse
 
 #colors
 darkBackgroundColor = "#0f0e52"
@@ -9,9 +10,12 @@ lightBackgroundColor = "#4d6fa1"
 fontColor = "#f0e7b6"
 
 class chatApp:
+    step = 0
+
     def __init__(self):
         self.window = Tk()
         self.setUp()
+        
 
     def run(self):
         self.window.mainloop()
@@ -19,11 +23,11 @@ class chatApp:
     def setUp(self):
         #window
         self.window.title("Friendly Chatbot")
-        self.window.configure(background=darkBackgroundColor, width=420, height=420)
+        self.window.configure(background=darkBackgroundColor, width=520, height=600)
         self.window.resizable(width=False, height=False)
 
         #top
-        top = Label(self.window, text="Welcome!", font=("Ariel", 20, "bold"), fg=fontColor, bg=darkBackgroundColor, pady=5)
+        top = Label(self.window, text="Welcome!💬", font=("Ariel", 20, "bold"), fg=fontColor, bg=darkBackgroundColor, pady=20)
         top.place(relwidth=1)
         
         #text area
@@ -41,33 +45,40 @@ class chatApp:
         bottom.place(relwidth=1, rely=0.86)
 
         #text input box
-        self.messageBox = Entry(bottom)
-        self.messageBox.place(relwidth=0.95, relheight=0.035, relx=0.025, rely=0.005)
+        self.messageBox = Entry(bottom, font=("Ariel", 13))
+        self.messageBox.place(relwidth=0.95, relheight=0.05, relx=0.025, rely=0.01)
         self.messageBox.focus()
         self.messageBox.bind("<Return>", self.enterPressed)
 
     def enterPressed(self, event):
         msg = self.messageBox.get()
-        self.insertMessage(msg, "You")
+        self.yourMessage(msg, "You")
+        self.botResponse(getResponse(msg, self.step))
+        self.step += 1
 
-    def insertMessage(self, msg, sender):
+    def yourMessage(self, msg, sender):
         if not msg:
             return
         
         self.messageBox.delete(0, "end")
-        #client response
+
         msgPerson = f"{sender}: {msg}\n\n"
         self.text.configure(cursor="arrow", state="normal")
         self.text.insert("end", msgPerson)
         self.text.configure(cursor="arrow", state="disabled")
+        self.text.see("end")
 
-        #bot response
-        msgBot = f"Bot: {response}\n\n"
+    def botResponse(self, botResponse):
+        msgBot = f"Bot: {botResponse}\n\n"
         self.text.configure(cursor="arrow", state="normal")
         self.text.insert("end", msgBot)
         self.text.configure(cursor="arrow", state="disabled")
-
         self.text.see("end")
+
+        text_object = gTTS(text=botResponse, lang="en", slow=False)
+        text_object.save(f"botRecordings/response.mp3")
+        audio = AudioSegment.from_mp3(f"botRecordings/response.mp3")
+        play(audio)
 
 if __name__ == "__main__":
     app = chatApp()
