@@ -6,7 +6,7 @@ Konrad is a chatbot designed to uplift a person's spirits.
 - It also utilizes a sentiment analysis model to determine the users' mood and respond accordingly.
 
 ## Created with
-Python, Tkinker, Transformer models (DiabloGPT and DistilBERT)
+Python, Tkinter, Transformer models (DiabloGPT and DistilBERT)
 
 ## How to use
 Run the app.py file using an IDE of your choice or from the terminal.
