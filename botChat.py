@@ -22,41 +22,22 @@ def getResponse(msg, step):
         positive = ["That's good!", "Good to hear!", "Glad to hear that!", "Fantastic!", "Great!"]
         negative = ["Hmm...", "That's not so good.", "Oh.", "That's not great."]
         if attitude == "POSITIVE":
-            return positive[random.randint(0, len(positive)-1)] + " Let's continue chatting for a bit. Anything on your mind?"
+            return positive[random.randint(0, len(positive)-1)] + "Let's continue chatting for a bit.\nAnything on your mind?"
         else:
             return negative[random.randint(0, len(negative)-1)] + " What's on your mind?"  
     
-    #RIGHT HERE
-    else:    
-        #This is basic and it works with the app.
+    else:   
+        ending = ["Bye!", "Goodbye!", "Adios!", "Take care.", "Farewell!", "See you later!"]
+        if any([harm in msg for harm in ["kill myself", "disappear", "worthless", "dead inside", "no reason to live", "hopeless", "die"]]):
+            return "If you're suicidal, please call 1-800-273-8255" + "\nIt's the National Suicide Prevention Lifeline." + "\nOr text HOME to 741741 for anonymous and free crisis counseling."
+
+        elif any([end in msg for end in ["bye","goodbye", "see you later"]]):
+            return ending[random.randint(0, len(ending)-1)]
+
         conversation.add_user_input(msg)
         response = str(conversationalPipeline([conversation], pad_token_id=50256))
         response = response.split("\n")
         return response[-2].split(" >> ")[-1]
-
-        #This is the more complex response for bot thingy. The error is with chat_history_ids. 
-        #On line 45, it keeps saying chat_history_ids is not defined yet. But when taken out and placed into a seperate file it works.
-        #On another note, I did remove the for loop, and that could be another reason why. I didn't want to limit the user to like 5 messages only.
-        #Also not quite done with this, as I want to add the ending goodbyes and stuff.
-
-        # input_ids = tokenizer.encode(msg + tokenizer.eos_token, return_tensors="pt")
-        # # concatenate new user input with chat history (if there is)
-
-        # bot_input_ids = torch.cat([chat_history_ids, input_ids], dim=-1) if step > 3 else input_ids
-        # # generate a bot response
-        # chat_history_ids = model.generate(
-        #     bot_input_ids,
-        #     max_length=1000,
-        #     do_sample=True,
-        #     top_p=0.95,
-        #     top_k=100,
-        #     temperature=0.75,
-        #     pad_token_id=tokenizer.eos_token_id
-        # )
-        # #print the output
-        # output = tokenizer.decode(chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)
-        # return output
-
 
 def sentiment(msg):
     modelName = "distilbert-base-uncased-finetuned-sst-2-english"
