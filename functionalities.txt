@@ -3,10 +3,7 @@ chatbot functionalities:
 - if user is having a bad day, the bot can give compliments to cheer the user up
 - if user is having a good day, the bot can chat with the user
 - say some goofy statements to make the user laugh
-- can offer resources for the user (like some therapy sites)
+- can offer resources for the user 
 - can have a conversation
 extra:
 -> add voice
--> the bot can help out with homework:
--> summarize paragraphs
--> calculator
