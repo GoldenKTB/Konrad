@@ -13,3 +13,5 @@ Run the app.py file using an IDE of your choice or from the terminal.
 
 ## Notes
 The pipe1.py, pipe2.py, etc. are previous versions of the chatbot. They don't work with the app. They work inside the terminal instead.
+
+This project was created for the LingHacks IV hackathon.
